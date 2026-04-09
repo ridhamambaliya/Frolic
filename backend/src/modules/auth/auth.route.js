@@ -10,7 +10,7 @@ import {
 import authMiddleware from "../../middlewares/auth.middleware.js";
 import roleMiddleware from "../../middlewares/role.middleware.js";
 
-const authRoutes = express.Router();
+const   authRoutes = express.Router();
 
 authRoutes.post("/register", registerController);
 authRoutes.post("/login", loginController);

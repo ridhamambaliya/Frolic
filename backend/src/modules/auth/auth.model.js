@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       default: "student",
-      enum: ["admin", "student", "institute_coordinator", "department_coordinator"],
+      enum: ["admin", "student", "institute_coordinator", "department_coordinator", "event_coordinator"],
     },
     isBanned: {
       type: Boolean,

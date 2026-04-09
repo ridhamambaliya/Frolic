@@ -6,6 +6,7 @@ import connectDB from './config/db.js';
 import createAdmin from './utils/admin.seed.js';
 import instituteRoutes from './modules/institutes/institute.route.js';
 import departmentRoutes from './modules/department/department.route.js';
+import eventRoutes from './modules/event/event.route.js';
 
 dotenv.config();
 
@@ -29,7 +30,7 @@ app.use(cors({
 app.use('/auth', authRoutes);
 app.use("/institute", instituteRoutes);
 app.use("/department", departmentRoutes);
-
+app.use("/event", eventRoutes);
 // app.use('/event',eventRouter);
 
 // =============================== //
