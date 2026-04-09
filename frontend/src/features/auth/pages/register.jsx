@@ -38,7 +38,7 @@ const Register = () => {
         try {
             const { confirmPassword, ...payload } = form;
             const res = await registerUser(payload);
-            handleAuthSuccess(res.data);
+            handleAuthSuccess(res.data.data);
 
         } catch (err) {
             setError(err.response?.data?.message || "Registration Failed");

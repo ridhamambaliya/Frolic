@@ -8,7 +8,7 @@ import {
 
 export const createEventController = async (req, res, next) => {
   try {
-    const result = await createEventService(req.body);
+    const result = await createEventService(req.body, req.user);
 
     res.status(201).json({
       success: true,
@@ -23,7 +23,7 @@ export const createEventController = async (req, res, next) => {
 export const getAllEventsController = async (req, res, next) => {
   try {
     const search = req.query.search || "";
-    const result = await getAllEventsService(search);
+    const result = await getAllEventsService(search, req.user);
 
     res.status(200).json({
       success: true,
@@ -37,7 +37,7 @@ export const getAllEventsController = async (req, res, next) => {
 
 export const getEventByIdController = async (req, res, next) => {
   try {
-    const result = await getEventByIdService(req.params.id);
+    const result = await getEventByIdService(req.params.id, req.user);
 
     res.status(200).json({
       success: true,
@@ -51,7 +51,7 @@ export const getEventByIdController = async (req, res, next) => {
 
 export const updateEventController = async (req, res, next) => {
   try {
-    const result = await updateEventService(req.params.id, req.body);
+    const result = await updateEventService(req.params.id, req.body, req.user);
 
     res.status(200).json({
       success: true,
@@ -65,7 +65,7 @@ export const updateEventController = async (req, res, next) => {
 
 export const deleteEventController = async (req, res, next) => {
   try {
-    const result = await deleteEventService(req.params.id);
+    const result = await deleteEventService(req.params.id, req.user);
 
     res.status(200).json({
       success: true,

@@ -8,7 +8,7 @@ import ConfirmModal from "../../../components/ui/ConfirmModal";
 import { getUsers, toggleBanUser, updateUserRole } from "../../../services/authService";
 import UpdateUserRoleModal from "../../auth/modal/UpdateRoleModal";
 
-const tabs = ["All", "Active", "Banned"];
+const tabs = ["All", "Active", "Banned", "Institute Coord", "Department Coord", "Event Coord", "Student"];
 
 const AdminUsers = () => {
   const [search, setSearch] = useState("");
@@ -44,16 +44,42 @@ const AdminUsers = () => {
   }, [search]);
 
   const filteredUsers = useMemo(() => {
+    let list = [...users];
+
+    // Filter by search (case insensitive)
+    if (search) {
+      list = list.filter(user =>
+        user.name.toLowerCase().includes(search.toLowerCase()) ||
+        user.email.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
     if (activeTab === "Banned") {
-      return users.filter((user) => user.isBanned);
+      return list.filter((user) => user.isBanned);
     }
 
     if (activeTab === "Active") {
-      return users.filter((user) => !user.isBanned);
+      return list.filter((user) => !user.isBanned);
     }
 
-    return users;
-  }, [users, activeTab]);
+    if (activeTab === "Institute Coord") {
+      return list.filter((user) => user.role === "institute_coordinator");
+    }
+
+    if (activeTab === "Department Coord") {
+      return list.filter((user) => user.role === "department_coordinator");
+    }
+
+    if (activeTab === "Event Coord") {
+      return list.filter((user) => user.role === "event_coordinator");
+    }
+
+    if (activeTab === "Student") {
+      return list.filter((user) => user.role === "student");
+    }
+
+    return list;
+  }, [users, activeTab, search]);
 
   const handleOpenBanModal = (user) => {
     setSelectedUser(user);

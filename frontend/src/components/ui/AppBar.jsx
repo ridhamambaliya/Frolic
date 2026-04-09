@@ -1,9 +1,18 @@
-import { AuthProvider, useAuthContext } from "../../features/auth/context/AuthContext";
 import { useAuth } from "../../features/auth/hooks/useAuth";
+import { useAuthContext } from "../../features/auth/context/AuthContext";
+
+const roleLabelMap = {
+  admin: "System Administrator",
+  institute_coordinator: "Institute Coordinator",
+  department_coordinator: "Department Coordinator",
+  event_coordinator: "Event Coordinator",
+  student: "Student",
+};
 
 const AppBar = () => {
   const { handleLogout } = useAuth();
-  
+  const { user, role } = useAuthContext();
+
   return (
     <nav className="sticky top-0 z-40 bg-secondary/80 backdrop-blur-md border-b border-white/10 px-9 py-5">
       <div className="flex justify-between items-center">
@@ -13,9 +22,9 @@ const AppBar = () => {
 
         <div className="flex items-center gap-4">
           <div className="hidden md:block text-right">
-            <div className="text-sm font-bold">Admin User</div>
+            <div className="text-sm font-bold">{user?.name || "User"}</div>
             <div className="text-[0.6rem] uppercase tracking-wide text-slate-400">
-              System Administrator
+              {roleLabelMap[role] || "User"}
             </div>
           </div>
 

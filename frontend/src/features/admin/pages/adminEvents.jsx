@@ -11,6 +11,7 @@ import {
   createEvent,
   deleteEvent,
   getEvents,
+  updateEvent,
 } from "../../../services/eventService";
 import EventDetailsModal from "../modal/EventDetailModal";
 
@@ -25,6 +26,7 @@ const AdminEvents = () => {
   const [loading, setLoading] = useState({
     list: false,
     create: false,
+    edit: false,
     delete: false,
   });
 
@@ -67,9 +69,30 @@ const AdminEvents = () => {
     }
   };
 
+  const handleUpdateEvent = async (formData, resetForm) => {
+    if (!selectedEvent?._id) return;
+
+    try {
+      setLoading((prev) => ({ ...prev, edit: true }));
+      await updateEvent(selectedEvent._id, formData);
+      resetForm();
+      handleCloseModal();
+      fetchEvents(search);
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading((prev) => ({ ...prev, edit: false }));
+    }
+  };
+
   const handleOpenViewModal = (event) => {
     setSelectedEvent(event);
     setModal("view");
+  };
+
+  const handleOpenEditModal = (event) => {
+    setSelectedEvent(event);
+    setModal("edit");
   };
 
   const handleOpenDeleteModal = (event) => {
@@ -117,15 +140,18 @@ const AdminEvents = () => {
           events={events}
           loading={loading.list}
           onView={handleOpenViewModal}
+          onEdit={handleOpenEditModal}
           onDelete={handleOpenDeleteModal}
         />
       </AdminSectionCard>
 
       <AddEventForm
-        isOpen={modal === "create"}
+        isOpen={modal === "create" || modal === "edit"}
         onClose={handleCloseModal}
-        onSubmit={handleCreateEvent}
-        loading={loading.create}
+        onSubmit={modal === "edit" ? handleUpdateEvent : handleCreateEvent}
+        loading={modal === "edit" ? loading.edit : loading.create}
+        initialData={modal === "edit" ? selectedEvent : null}
+        isEditMode={modal === "edit"}
       />
 
       <EventDetailsModal

@@ -57,7 +57,7 @@ const AddDepartmentForm = ({
         const allUsers = userRes.data?.data || [];
 
         const departmentCoordinators = allUsers.filter(
-          (user) => user.role === "department_coordinator"
+          (user) => user.role === "department_coordinator" && !user.isBanned
         );
         setCoordinators(departmentCoordinators);
       } catch (error) {
@@ -235,7 +235,7 @@ const AddDepartmentForm = ({
         </div>
 
         {error && <p className="text-sm text-red-400 font-medium">{error}</p>}
-        
+
         <div className="flex items-center gap-4 p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-xl">
           <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg">
             <i className="bi bi-patch-check"></i>

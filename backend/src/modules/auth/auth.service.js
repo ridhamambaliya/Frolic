@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "./auth.model.js";
-import generateToken from "../../utils/genrateToken.js";
+import generateToken from "../../utils/generateToken.js";
 
 export const registerService = async ({ name, email, password }) => {
   const existingUser = await User.findOne({ email });
@@ -62,7 +62,12 @@ export const loginService = async ({ email, password }) => {
 };
 
 export const updateUserRoleService = async (id, role) => {
-  const allowedRoles = ["student", "institute_coordinator", "department_coordinator"];
+  const allowedRoles = [
+    "student",
+    "institute_coordinator",
+    "department_coordinator",
+    "event_coordinator",
+  ];
 
   if (!allowedRoles.includes(role)) {
     throw new Error("Invalid role selected");
@@ -71,7 +76,7 @@ export const updateUserRoleService = async (id, role) => {
   const user = await User.findByIdAndUpdate(
     id,
     { role },
-    {  returnDocument: "after", runValidators: true }
+    { new: true, runValidators: true }
   ).select("name email role isBanned createdAt");
 
   if (!user) {
@@ -96,6 +101,37 @@ export const getUsersService = async (search = "") => {
   const users = await User.find(query)
     .select("name email role isBanned createdAt")
     .sort({ createdAt: -1 });
-
   return users;
+};
+
+export const updateProfileService = async (id, { name, email }) => {
+  const user = await User.findByIdAndUpdate(
+    id,
+    { name, email },
+    { new: true, runValidators: true }
+  ).select("name email role isBanned createdAt");
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  return user;
+};
+
+export const updatePasswordService = async (id, { oldPassword, newPassword }) => {
+  const user = await User.findById(id).select("+password");
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const isMatch = await bcrypt.compare(oldPassword, user.password);
+  if (!isMatch) {
+    throw new Error("Current password is incorrect");
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  user.password = hashedPassword;
+  await user.save();
+
+  return { message: "Password updated successfully" };
 };

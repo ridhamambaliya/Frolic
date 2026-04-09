@@ -31,7 +31,7 @@ const Login = () => {
 
     try {
       const res = await loginUser(form);
-      handleAuthSuccess(res.data);
+      handleAuthSuccess(res.data.data);
     } catch (err) {
       setError(err.response?.data?.message || "Login Failed");
       console.log(err.message);

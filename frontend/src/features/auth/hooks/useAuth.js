@@ -5,7 +5,8 @@ const routes = {
     admin: "/admin/dashboard",
     student: "/student/dashboard",
     institute_coordinator: "/institute/dashboard",
-    department_coordinator: "/department/dashboard",
+    department_coordinator: "/student/dashboard",
+    event_coordinator: "/student/dashboard",
 };
 
 export const useAuth = () => {

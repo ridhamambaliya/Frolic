@@ -1,6 +1,6 @@
 import IconButton from "../../../components/ui/IconButton";
 
-const EventCard = ({ events = [], loading = false, onView, onDelete }) => {
+const EventCard = ({ events = [], loading = false, onView, onEdit, onDelete }) => {
   if (loading) {
     return (
       <div className="text-center py-10 text-slate-400">
@@ -82,7 +82,11 @@ const EventCard = ({ events = [], loading = false, onView, onDelete }) => {
                 className="flex gap-2"
                 onClick={(e) => e.stopPropagation()}
               >
-                <IconButton icon="bi-pencil" variant="edit" />
+                <IconButton
+                  icon="bi-pencil"
+                  variant="edit"
+                  onClick={() => onEdit(event)}
+                />
                 <IconButton
                   icon="bi-trash"
                   variant="delete"

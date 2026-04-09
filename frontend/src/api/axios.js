@@ -1,23 +1,20 @@
 import axios from "axios";
 import { url } from "../utils/constant";
-// instance creation
+
 const api = axios.create({
   baseURL: url,
 });
-// runs BEFORE every API request
+
 api.interceptors.request.use(
-  // req object
   (config) => {
     const token = localStorage.getItem("token");
 
     if (token) {
-      // adding a header to request
       config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;
   },
-  // something fails in interceptor → pass error forward
   (error) => Promise.reject(error)
 );
 
@@ -30,7 +27,7 @@ api.interceptors.response.use(
     const isAuthPageRequest =
       requestUrl.includes("/auth/login") || requestUrl.includes("/auth/register");
 
-    if (status === 401) {
+    if ((status === 401 || status === 403) && !isAuthPageRequest) {
       const token = localStorage.getItem("token");
 
       if (token) {
@@ -43,4 +40,5 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
 export default api;

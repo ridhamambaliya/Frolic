@@ -51,7 +51,7 @@ const AddInstituteForm = ({
         const allUsers = res.data.data || [];
 
         const instituteCoordinators = allUsers.filter(
-          (user) => user.role === "institute_coordinator"
+          (user) => user.role === "institute_coordinator" && !user.isBanned
         );
 
         setCoordinators(instituteCoordinators);

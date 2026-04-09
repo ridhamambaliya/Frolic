@@ -8,7 +8,7 @@ import {
 
 export const createDepartmentController = async (req, res, next) => {
   try {
-    const department = await createDepartmentService(req.body);
+    const department = await createDepartmentService(req.body, req.user);
 
     res.status(201).json({
       success: true,
@@ -23,8 +23,7 @@ export const createDepartmentController = async (req, res, next) => {
 export const getAllDepartmentsController = async (req, res, next) => {
   try {
     const { search = "" } = req.query;
-
-    const departments = await getAllDepartmentsService(search);
+    const departments = await getAllDepartmentsService(search, req.user);
 
     res.status(200).json({
       success: true,
@@ -38,7 +37,7 @@ export const getAllDepartmentsController = async (req, res, next) => {
 
 export const getDepartmentByIdController = async (req, res, next) => {
   try {
-    const department = await getDepartmentByIdService(req.params.id);
+    const department = await getDepartmentByIdService(req.params.id, req.user);
 
     res.status(200).json({
       success: true,
@@ -52,7 +51,7 @@ export const getDepartmentByIdController = async (req, res, next) => {
 
 export const updateDepartmentController = async (req, res, next) => {
   try {
-    const department = await updateDepartmentService(req.params.id, req.body);
+    const department = await updateDepartmentService(req.params.id, req.body, req.user);
 
     res.status(200).json({
       success: true,
@@ -66,7 +65,7 @@ export const updateDepartmentController = async (req, res, next) => {
 
 export const deleteDepartmentController = async (req, res, next) => {
   try {
-    await deleteDepartmentService(req.params.id);
+    await deleteDepartmentService(req.params.id, req.user);
 
     res.status(200).json({
       success: true,
